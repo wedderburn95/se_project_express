@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// const User = require("../models/user");
+const User = require("../models/user");
 
 // GET /users
 // const BAD_RequestStatus_CODE = 400; Use this instead of the hard coded numbers.
