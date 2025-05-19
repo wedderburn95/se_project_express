@@ -19,6 +19,10 @@ mongoose
 app.use(express.json());
 
 // middleware with req.user
+app.use((req, res, next) => {
+  req.user = { _id: "6827a4835ddd5516b68eece9" };
+  next();
+});
 
 app.use("/", mainRouter);
 app.use("/users", userRouter);
