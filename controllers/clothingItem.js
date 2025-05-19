@@ -19,11 +19,12 @@ const getItems = (req, res) => {
     );
 };
 
-// POST /items (already exists)
+// POST /items
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
+  const owner = req.user._id;
 
-  return ClothingItem.create({ name, weather, imageUrl, likes: [] })
+  return ClothingItem.create({ name, weather, imageUrl, likes: [], owner })
     .then((item) => res.status(CREATED_STATUS_CODE).send(item))
     .catch((err) => {
       if (err.name === "ValidationError") {
@@ -71,7 +72,7 @@ const deleteItem = (req, res) => {
 // PUT /items/:itemId/likes
 const likeItem = (req, res) => {
   const { itemId } = req.params;
-  const userId = "someUserId"; // Replace with real user ID if using auth
+  const userId = req.user._id; // Replace with real user ID if using auth
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
     return res
@@ -107,7 +108,7 @@ const likeItem = (req, res) => {
 // DELETE /items/:itemId/likes
 const unlikeItem = (req, res) => {
   const { itemId } = req.params;
-  const userId = "someUserId"; // req.user._id
+  const userId = req.user._id; // req.user._id
 
   ClothingItem.findByIdAndUpdate(
     itemId,
