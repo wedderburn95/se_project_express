@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const validator = require("validator");
 
+const user = require("./user.js");
+
 const clothingItemSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -24,6 +26,19 @@ const clothingItemSchema = new mongoose.Schema({
       },
     },
     message: "You must enter a valid URL",
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: user,
+    required: true,
+  },
+  likes: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: user }],
+    default: [],
+  },
+  createsAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
