@@ -2,19 +2,15 @@ const mongoose = require("mongoose");
 
 const ClothingItem = require("../models/clothingItem");
 
-const OK_STATUS_CODE = 200;
-const CREATED_STATUS_CODE = 201;
-const BAD_REQUEST_STATUS_CODE = 400;
-const NOT_FOUND_STATUS_CODE = 404;
-const INTERNAL_SERVER_ERROR_STATUS_CODE = 500;
+const { statusCodes } = require("../utils/constants");
 
 // GET /items
 const getItems = (req, res) => {
   ClothingItem.find({})
-    .then((items) => res.status(OK_STATUS_CODE).send(items))
+    .then((items) => res.status(statusCodes.OK).send(items))
     .catch((err) =>
       res
-        .status(INTERNAL_SERVER_ERROR_STATUS_CODE)
+        .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: err.message })
     );
 };
@@ -25,15 +21,15 @@ const createItem = (req, res) => {
   const owner = req.user._id;
 
   return ClothingItem.create({ name, weather, imageUrl, likes: [], owner })
-    .then((item) => res.status(CREATED_STATUS_CODE).send(item))
+    .then((item) => res.status(statusCodes.CREATED).send(item))
     .catch((err) => {
       if (err.name === "ValidationError") {
         return res
-          .status(BAD_REQUEST_STATUS_CODE)
+          .status(statusCodes.BAD_REQUEST)
           .send({ message: err.message });
       }
       return res
-        .status(INTERNAL_SERVER_ERROR_STATUS_CODE)
+        .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: "Internal Server Error" });
     });
 };
@@ -44,7 +40,7 @@ const deleteItem = (req, res) => {
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
     return res
-      .status(BAD_REQUEST_STATUS_CODE)
+      .status(statusCodes.BAD_REQUEST)
       .send({ message: "Invalid item ID" });
   }
 
@@ -52,19 +48,19 @@ const deleteItem = (req, res) => {
     .then((item) => {
       if (!item) {
         return res
-          .status(NOT_FOUND_STATUS_CODE)
+          .status(statusCodes.NOT_FOUND)
           .send({ message: "Item not found" });
       }
-      return res.status(OK_STATUS_CODE).send(item);
+      return res.status(statusCodes.OK).send(item);
     })
     .catch((err) => {
       if (err.name === "CastError") {
         return res
-          .status(BAD_REQUEST_STATUS_CODE)
+          .status(statusCodes.BAD_REQUEST)
           .send({ message: "Invalid item ID" });
       }
       return res
-        .status(INTERNAL_SERVER_ERROR_STATUS_CODE)
+        .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: err.message });
     });
 };
@@ -76,7 +72,7 @@ const likeItem = (req, res) => {
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
     return res
-      .status(BAD_REQUEST_STATUS_CODE)
+      .status(statusCodes.BAD_REQUEST)
       .send({ message: "Invalid  item ID" });
   }
 
@@ -88,19 +84,19 @@ const likeItem = (req, res) => {
     .then((item) => {
       if (!item) {
         return res
-          .status(NOT_FOUND_STATUS_CODE)
+          .status(statusCodes.NOT_FOUND)
           .send({ message: "Item not found" });
       }
-      return res.status(OK_STATUS_CODE).send(item);
+      return res.status(statusCodes.OK).send(item);
     })
     .catch((err) => {
       if (err.name === "CastError") {
         return res
-          .status(BAD_REQUEST_STATUS_CODE)
+          .status(statusCodes.BAD_REQUEST)
           .send({ message: "Invalid item ID" });
       }
       return res
-        .status(INTERNAL_SERVER_ERROR_STATUS_CODE)
+        .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: err.message });
     });
 };
@@ -118,19 +114,19 @@ const unlikeItem = (req, res) => {
     .then((item) => {
       if (!item) {
         return res
-          .status(NOT_FOUND_STATUS_CODE)
+          .status(statusCodes.NOT_FOUND)
           .send({ message: "Item not found" });
       }
-      return res.status(OK_STATUS_CODE).send(item);
+      return res.status(statusCodes.OK).send(item);
     })
     .catch((err) => {
       if (err.name === "CastError") {
         return res
-          .status(BAD_REQUEST_STATUS_CODE)
+          .status(statusCodes.BAD_REQUEST)
           .send({ message: "Invalid item ID" });
       }
       return res
-        .status(INTERNAL_SERVER_ERROR_STATUS_CODE)
+        .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: err.message });
     });
 };
