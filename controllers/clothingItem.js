@@ -11,7 +11,7 @@ const getItems = (req, res) => {
     .catch((err) =>
       res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: err.message })
+        .send({ message: "An error has occurred on the server" })
     );
 };
 
@@ -26,7 +26,7 @@ const createItem = (req, res) => {
       if (err.name === "ValidationError") {
         return res
           .status(statusCodes.BAD_REQUEST)
-          .send({ message: err.message });
+          .send({ message: "An error has occurred on the server" });
       }
       return res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
@@ -61,7 +61,7 @@ const deleteItem = (req, res) => {
       }
       return res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: err.message });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -97,7 +97,7 @@ const likeItem = (req, res) => {
       }
       return res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: err.message });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -127,7 +127,7 @@ const unlikeItem = (req, res) => {
       }
       return res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: err.message });
+        .send({ message: "An error has occurred on the server" });
     });
 };
 

@@ -30,7 +30,9 @@ app.use("/users", userRouter);
 app.use((err, req, res) => {
   console.error(err);
   if (err.name === "ValidationError") {
-    return res.status(400).send({ message: err.message });
+    return res
+      .status(400)
+      .send({ message: "An error has occurred on the server" });
   }
   if (err.name === "CastError") {
     return res.status(400).send({ message: "Invalid ID format" });
