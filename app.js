@@ -7,6 +7,7 @@ const userRouter = require("./routes/users");
 const app = express();
 const { PORT = 3001 } = process.env;
 
+const { statusCodes } = require("../utils/constants");
 const logger = console;
 
 mongoose
@@ -25,19 +26,22 @@ app.use((req, res, next) => {
 });
 
 app.use("/", mainRouter);
-app.use("/users", userRouter);
 
 app.use((err, req, res) => {
   console.error(err);
   if (err.name === "ValidationError") {
     return res
-      .status(400)
+      .status(statusCodes.BAD_REQUEST)
       .send({ message: "An error has occurred on the server" });
   }
   if (err.name === "CastError") {
-    return res.status(400).send({ message: "Invalid ID format" });
+    return res
+      .status(statusCodes.BAD_REQUEST)
+      .send({ message: "Invalid ID format" });
   }
-  return res.status(500).send({ message: "Internal Server Error" });
+  return res
+    .status(statusCodes.INTERNAL_SERVER_ERROR)
+    .send({ message: "Internal Server Error" });
 });
 
 app.listen(PORT, () => {
