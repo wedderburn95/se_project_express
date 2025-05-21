@@ -6,8 +6,6 @@ const app = express();
 
 const mainRouter = require("./routes/index");
 
-const userRouter = require("./routes/users");
-
 const { PORT = 3001 } = process.env;
 
 const { statusCodes } = require("./utils/constants");
@@ -30,7 +28,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/", mainRouter);
-// app.use("/users", userRouter);
 
 app.use((err, req, res) => {
   console.error(err);
