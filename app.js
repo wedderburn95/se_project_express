@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/", mainRouter);
-app.use("/users", userRouter);
+// app.use("/users", userRouter);
 
 app.use((err, req, res) => {
   console.error(err);
