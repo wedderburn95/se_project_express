@@ -11,6 +11,7 @@ const userRouter = require("./routes/users");
 const { PORT = 3001 } = process.env;
 
 const { statusCodes } = require("./utils/constants");
+
 const logger = console;
 
 mongoose
