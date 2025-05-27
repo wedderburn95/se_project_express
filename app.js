@@ -1,16 +1,22 @@
 const mongoose = require("mongoose");
 
 const express = require("express");
+const auth = require("./middlewares/auth");
+const authRouter = require("./routes/auth");
+const mainRouter = require("./routes/index");
+const cors = require("cors");
 
 const app = express();
 
-const mainRouter = require("./routes/index");
+app.use(cors());
 
 const { PORT = 3001 } = process.env;
 
-const { statusCodes } = require("./utils/constants");
+const { statusCodes } = require("./utils/config");
 
 const logger = console;
+
+const jwt = require("dotenv").config();
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
@@ -21,15 +27,15 @@ mongoose
 
 app.use(express.json());
 
-// middleware with req.user
-app.use((req, res, next) => {
-  req.user = { _id: "6827a4835ddd5516b68eece9" };
-  next();
-});
+// Allow signup and signin without auth
+app.use("/", authRouter);
+
+// Require token for all routes below
+app.use(auth);
 
 app.use("/", mainRouter);
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   console.error(err);
   if (err.name === "ValidationError") {
     return res

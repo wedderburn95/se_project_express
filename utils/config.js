@@ -4,6 +4,8 @@ const statusCodes = {
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
+  DUPLICATE_EMAIL: 409,
+  UNAUTHORIZED: 401,
 };
 
 module.exports = { statusCodes };

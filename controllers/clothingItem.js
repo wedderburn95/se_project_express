@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ClothingItem = require("../models/clothingItem");
 
-const { statusCodes } = require("../utils/constants");
+const { statusCodes } = require("../utils/config");
 
 // GET /items
 const getItems = (req, res) => {
@@ -51,17 +51,20 @@ const deleteItem = (req, res) => {
           .status(statusCodes.NOT_FOUND)
           .send({ message: "Item not found" });
       }
-      return res.status(statusCodes.OK).send(item);
+
+      // ✅ Ownership check
+      if (item.owner.toString() !== req.user._id) {
+        return res
+          .status(statusCodes.FORBIDDEN)
+          .send({ message: "You are not allowed to delete this item" });
+      }
+
+      return item.deleteOne().then(() => res.status(statusCodes.OK).send(item));
     })
     .catch((err) => {
-      if (err.name === "CastError") {
-        return res
-          .status(statusCodes.BAD_REQUEST)
-          .send({ message: "Invalid item ID" });
-      }
-      return res
+      res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" });
+        .send({ message: "An error occurred while deleting the item" });
     });
 };
 
