@@ -133,9 +133,7 @@ const updateUserProfile = (req, res, next) => {
           .status(statusCodes.BAD_REQUEST)
           .send({ message: "Invalid user data" });
       }
-      return next(err)
-        .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" });
+      return next(err);
     });
 };
 
