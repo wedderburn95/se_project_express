@@ -67,12 +67,12 @@ const login = (req, res) => {
         const token = jwt.sign({ _id: user._id }, "secret-key", {
           expiresIn: "7d",
         });
-        res.status(statusCodes.OK).send({ token });
+        return res.status(statusCodes.OK).send({ token });
       });
     })
     .catch((err) => {
       console.error(err);
-      res
+      return res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
