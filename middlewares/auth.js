@@ -3,10 +3,6 @@ const { statusCodes } = require("../utils/config");
 
 const { JWT_SECRET } = process.env;
 
-// const payload = jwt.verify(token, JWT_SECRET);
-
-// const JWT_SECRET = process.env.JWT_SECRET;
-
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
@@ -28,7 +24,7 @@ const auth = (req, res, next) => {
       .send({ message: "Invalid token" });
   }
   req.user = payload;
-  next();
+  return next();
 };
 
 module.exports = auth;

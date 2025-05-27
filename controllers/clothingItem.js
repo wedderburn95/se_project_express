@@ -61,7 +61,7 @@ const deleteItem = (req, res) => {
 
       return item.deleteOne().then(() => res.status(statusCodes.OK).send(item));
     })
-    .catch((err) => {
+    .catch(() => {
       res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: "An error occurred while deleting the item" });
@@ -109,7 +109,7 @@ const unlikeItem = (req, res) => {
   const { itemId } = req.params;
   const userId = req.user._id; // req.user._id
 
-  ClothingItem.findByIdAndUpdate(
+  return ClothingItem.findByIdAndUpdate(
     itemId,
     { $pull: { likes: userId } },
     { new: true }

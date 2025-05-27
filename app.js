@@ -1,10 +1,12 @@
+require("dotenv").config();
+const cors = require("cors");
+
 const mongoose = require("mongoose");
 
 const express = require("express");
 const auth = require("./middlewares/auth");
 const authRouter = require("./routes/auth");
 const mainRouter = require("./routes/index");
-const cors = require("cors");
 
 const app = express();
 
@@ -15,8 +17,6 @@ const { PORT = 3001 } = process.env;
 const { statusCodes } = require("./utils/config");
 
 const logger = console;
-
-const jwt = require("dotenv").config();
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
@@ -35,7 +35,7 @@ app.use(auth);
 
 app.use("/", mainRouter);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err);
   if (err.name === "ValidationError") {
     return res

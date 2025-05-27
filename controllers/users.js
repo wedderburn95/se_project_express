@@ -20,7 +20,7 @@ const getUsers = (req, res) => {
     });
 };
 
-const createUser = (req, res, next) => {
+const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
   bcrypt
     .hash(password, 10)
@@ -113,7 +113,7 @@ const updateUserProfile = (req, res) => {
   const userId = req.user._id;
   const { name, avatar } = req.body;
 
-  return User.findByIdAndUpdate(
+  User.findByIdAndUpdate(
     userId,
     { name, avatar },
     { new: true, runValidators: true }
@@ -133,7 +133,7 @@ const updateUserProfile = (req, res) => {
           .status(statusCodes.BAD_REQUEST)
           .send({ message: "Invalid user data" });
       }
-      return res
+      return next(err)
         .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: "An error has occurred on the server" });
     });
