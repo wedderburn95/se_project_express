@@ -109,7 +109,7 @@ const getUser = (req, res) => {
 };
 
 // PATCH /users/me
-const updateUserProfile = (req, res, next) => {
+const updateUserProfile = (req, res) => {
   const userId = req.user._id;
   const { name, avatar } = req.body;
 
@@ -133,7 +133,9 @@ const updateUserProfile = (req, res, next) => {
           .status(statusCodes.BAD_REQUEST)
           .send({ message: "Invalid user data" });
       }
-      return next(err);
+      return res
+        .status(statusCodes.INTERNAL_SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
 
