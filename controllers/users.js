@@ -109,7 +109,7 @@ const getUser = (req, res) => {
 };
 
 // PATCH /users/me
-const updateUserProfile = (req, res) => {
+const updateUserProfile = (req, res, next) => {
   const userId = req.user._id;
   const { name, avatar } = req.body;
 
