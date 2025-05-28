@@ -27,8 +27,14 @@ mongoose
 
 app.use(express.json());
 
-// Allow signup and signin without auth
 app.use("/", authRouter);
+
+app.use((req, res, next) => {
+  req.user = { _id: "5d8b8592978f8bd833ca8133" }; // Use a valid user _id from your DB
+  next();
+});
+
+// Allow signup and signin without auth
 
 // Require token for all routes below
 app.use(auth);
