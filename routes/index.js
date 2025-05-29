@@ -15,10 +15,6 @@ const auth = require("../middlewares/auth");
 router.use("/users", userRouter);
 router.use("/items", clothingItemRouter);
 
-router.use((req, res) => {
-  res.status(statusCodes.NOT_FOUND).send({ message: "Route not found" });
-});
-
 router.post("/users", createUser);
 router.post("/signin", login);
 
@@ -26,5 +22,9 @@ router.use(auth);
 
 router.get("/users/me", getCurrentUser);
 router.patch("/users/me", updateUserProfile);
+
+router.use((req, res) => {
+  res.status(statusCodes.NOT_FOUND).send({ message: "Route not found" });
+});
 
 module.exports = router;
