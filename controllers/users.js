@@ -120,7 +120,7 @@ const updateUserProfile = (req, res) => {
   )
     .orFail(() => {
       const error = new Error("User not found");
-      error.statusCode.NOT_FOUND;
+      error.statusCode = statusCodes.NOT_FOUND;
       throw error;
     })
     .then((user) => {
