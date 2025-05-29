@@ -8,7 +8,7 @@ const auth = (req, res, next) => {
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return res
-      .status(statusCodes.BAD_REQUEST)
+      .status(statusCodes.UNAUTHORIZED)
       .send({ message: "Authorization required" });
   }
 
@@ -20,7 +20,7 @@ const auth = (req, res, next) => {
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
     return res
-      .status(statusCodes.BAD_REQUEST)
+      .status(statusCodes.UNAUTHORIZED)
       .send({ message: "Invalid token" });
   }
   req.user = payload;

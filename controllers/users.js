@@ -64,7 +64,7 @@ const login = (req, res) => {
             .status(statusCodes.UNAUTHORIZED)
             .send({ message: "Invalid email or password" });
         }
-        const token = jwt.sign({ _id: user._id }, "secret-key", {
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
           expiresIn: "7d",
         });
         return res.status(statusCodes.OK).send({ token });
@@ -118,6 +118,11 @@ const updateUserProfile = (req, res) => {
     { name, avatar },
     { new: true, runValidators: true }
   )
+    .orFail(() => {
+      const error = new Error("User not found");
+      error.statusCode.NOT_FOUND;
+      throw error;
+    })
     .then((user) => {
       if (!user) {
         return res
