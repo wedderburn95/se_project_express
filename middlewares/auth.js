@@ -7,7 +7,7 @@ const auth = (req, res, next) => {
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return res
-      .status(statusCodes.UNAUTHORIZED)
+      .status(statusCodes.BAD_REQUEST)
       .send({ message: "Authorization required" });
   }
 

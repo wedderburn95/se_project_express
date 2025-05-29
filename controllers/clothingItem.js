@@ -29,7 +29,7 @@ const createItem = (req, res) => {
           .send({ message: "An error has occurred on the server" });
       }
       return res
-        .status(statusCodes.INTERNAL_SERVER_ERROR)
+        .status(statusCodes.BAD_REQUEST)
         .send({ message: "Internal Server Error" });
     });
 };
@@ -64,7 +64,7 @@ const deleteItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       res
-        .status(statusCodes.INTERNAL_SERVER_ERROR)
+        .status(statusCodes.FORBIDDEN_ERROR)
         .send({ message: "An error occurred while deleting the item" });
     });
 };
