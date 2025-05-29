@@ -12,13 +12,13 @@ const {
 const { statusCodes } = require("../utils/config");
 const auth = require("../middlewares/auth");
 
-router.use("/users", userRouter);
-router.use("/items", clothingItemRouter);
-
 router.post("/users", createUser);
 router.post("/signin", login);
 
 router.use(auth);
+
+router.use("/users", userRouter);
+router.use("/items", clothingItemRouter);
 
 router.get("/users/me", getCurrentUser);
 router.patch("/users/me", updateUserProfile);
