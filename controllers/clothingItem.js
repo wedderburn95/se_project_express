@@ -61,7 +61,8 @@ const deleteItem = (req, res) => {
 
       return item.deleteOne().then(() => res.status(statusCodes.OK).send(item));
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
       res
         .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: "An error occurred while deleting the item" });
