@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { statusCodes } = require("../utils/config");
 
-const { JWT_SECRET } = process.env;
-
 const auth = (req, res, next) => {
+  const { JWT_SECRET } = process.env;
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
