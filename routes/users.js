@@ -1,9 +1,5 @@
 const router = require("express").Router();
-const {
-  getCurrentUser,
-  updateUserProfile,
-  getUser,
-} = require("../controllers/users");
+const { getCurrentUser, updateUserProfile } = require("../controllers/users");
 const auth = require("../middlewares/auth");
 
 // Get current authenticated user's profile

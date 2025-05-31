@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 const User = require("../models/user");
 
@@ -134,9 +134,7 @@ const getCurrentUser = (req, res) => {
 };
 
 module.exports = {
-  getUsers,
   createUser,
-  getUser,
   login,
   updateUserProfile,
   getCurrentUser,
