@@ -29,7 +29,7 @@ const createItem = (req, res) => {
           .send({ message: "An error has occurred on the server" });
       }
       return res
-        .status(statusCodes.BAD_REQUEST)
+        .status(statusCodes.INTERNAL_SERVER_ERROR)
         .send({ message: "Internal Server Error" });
     });
 };
@@ -44,7 +44,7 @@ const deleteItem = (req, res) => {
       .send({ message: "Invalid item ID" });
   }
 
-  return ClothingItem.findByIdAndDelete(itemId)
+  return ClothingItem.findById(itemId)
     .then((item) => {
       if (!item) {
         return res

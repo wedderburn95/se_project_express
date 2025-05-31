@@ -11,7 +11,7 @@ router.post("/signup", createUser);
 router.post("/signin", login);
 
 // Protect all routes below this line
-router.use(auth);
+// router.use(auth);
 
 // Authenticated routes
 router.use("/users", userRouter);

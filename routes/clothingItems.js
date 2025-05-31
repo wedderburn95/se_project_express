@@ -13,7 +13,9 @@ router.get("/", getItems);
 
 // Protected
 router.get("/", getItems);
-router.post("/", auth, createItem);
+
+router.use(auth);
+router.post("/", createItem);
 router.delete("/:itemId", deleteItem);
 router.put("/:itemId/likes", likeItem);
 router.delete("/:itemId/likes", unlikeItem);
