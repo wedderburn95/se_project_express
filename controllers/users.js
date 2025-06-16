@@ -11,6 +11,7 @@ const { statusCodes } = require("../utils/config");
 
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
+
   bcrypt
     .hash(password, 10)
     .then((hash) => User.create({ name, avatar, email, password: hash }))
