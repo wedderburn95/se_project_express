@@ -41,7 +41,7 @@ const createUser = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    res
+    return res
       .status(statusCodes.BAD_REQUEST)
       .send({ message: "Please include email or password" });
   }
