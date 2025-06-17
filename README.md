@@ -49,3 +49,7 @@ I created several folders to handle different tasks.
 ### Testing
 
 Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+
+### Backend link to github
+
+https://github.com/wedderburn95/se_project_express
