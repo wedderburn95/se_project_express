@@ -4,6 +4,15 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 
+const {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+  DuplicateEmailError,
+  UnauthorizedError,
+  INTERNAL_SERVER_ERROR,
+} = require("../errors/BadRequestError");
+
 const { statusCodes } = require("../utils/config");
 
 // GET /users
@@ -23,41 +32,49 @@ const createUser = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.code === 11000) {
-        return res
-          .status(statusCodes.DUPLICATE_EMAIL)
-          .send({ message: "Email already exists" });
+        return next(new DuplicateEmailError("Email already exists"));
+        // return res
+        //   .status(statusCodes.DuplicateEmailError)
+        //   .send({ message: "Email already exists" });
       }
       if (err.name === "ValidationError") {
-        return res
-          .status(statusCodes.BAD_REQUEST)
-          .send({ message: "An error has occurred on the server" });
+        return next(new BadRequestError("An error has occurred on the server"));
+        // return res
+        //   .status(statusCodes.BAD_REQUEST)
+        //   .send({ message: "An error has occurred on the server" });
       }
-      return res
-        .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" });
+      return next(
+        new INTERNAL_SERVER_ERROR("An error has occurred on the server")
+      );
+      // return res
+      //   .status(statusCodes.INTERNAL_SERVER_ERROR)
+      //   .send({ message: "An error has occurred on the server" });
     });
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res
-      .status(statusCodes.BAD_REQUEST)
-      .send({ message: "Please include email or password" });
+    return next(new BadRequestError("Please include email or password"));
+    // return res
+    //   .status(statusCodes.BAD_REQUEST)
+    //   .send({ message: "Please include email or password" });
   }
   return User.findOne({ email })
     .select("+password")
     .then((user) => {
       if (!user) {
-        return res
-          .status(statusCodes.UNAUTHORIZED)
-          .send({ message: "Invalid email or password" });
+        return next(new UnauthorizedError("Invalid email or password"));
+        // return res
+        //   .status(statusCodes.UNAUTHORIZED)
+        //   .send({ message: "Invalid email or password" });
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          return res
-            .status(statusCodes.UNAUTHORIZED)
-            .send({ message: "Invalid email or password" });
+          return next(new UnauthorizedError("Invalid email or password"));
+          // res
+          //   .status(statusCodes.UNAUTHORIZED)
+          //   .send({ message: "Invalid email or password" });
         }
         const token = jwt.sign(
           { _id: user._id },
@@ -71,9 +88,12 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res
-        .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" });
+      return next(
+        new INTERNAL_SERVER_ERROR("An error has occured on the server")
+      );
+      // res
+      //   .status(statusCodes.INTERNAL_SERVER_ERROR)
+      //   .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -89,27 +109,32 @@ const updateUserProfile = (req, res) => {
   )
     .orFail(() => {
       const error = new Error("User not found");
-      error.statusCode = statusCodes.NOT_FOUND;
+      error.statusCode = statusCodes.NotFoundError;
       throw error;
     })
     .then((user) => {
       if (!user) {
-        return res
-          .status(statusCodes.NOT_FOUND)
-          .send({ message: "User not found" });
+        return next(new NotFoundError("User not found"));
+        // res
+        //   .status(statusCodes.NotFoundError)
+        //   .send({ message: "User not found" });
       }
       return res.status(statusCodes.OK).send(user);
     })
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res
-          .status(statusCodes.BAD_REQUEST)
-          .send({ message: "Invalid user data" });
+        return next(new BadRequestError("Invalid user data"));
+        // res
+        //   .status(statusCodes.BAD_REQUEST)
+        //   .send({ message: "Invalid user data" });
       }
-      return res
-        .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" });
+      return next(
+        new INTERNAL_SERVER_ERROR("An error has occurred on the server")
+      );
+      // return res
+      //   .status(statusCodes.INTERNAL_SERVER_ERROR)
+      //   .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -120,17 +145,21 @@ const getCurrentUser = (req, res) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        return res
-          .status(statusCodes.NOT_FOUND)
-          .send({ message: "User not found" });
+        return next(new NotFoundError("User not found"));
+        // res
+        //   .status(statusCodes.NotFoundError)
+        //   .send({ message: "User not found" });
       }
       return res.status(statusCodes.OK).send(user);
     })
     .catch((err) => {
       console.error(err);
-      return res
-        .status(statusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: "An error has occurred on the server" });
+      return next(
+        new INTERNAL_SERVER_ERROR("An error has occurred on the server")
+      );
+      // return res
+      //   .status(statusCodes.INTERNAL_SERVER_ERROR)
+      //   .send({ message: "An error has occurred on the server" });
     });
 };
 

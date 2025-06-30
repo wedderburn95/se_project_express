@@ -4,11 +4,18 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 const express = require("express");
-// const auth = require("./middlewares/auth");
-// const authRouter = require("./routes/auth");
+
+const { errors } = require("celebrate");
+
+const errorHandler = require("./middlewares/error-handler");
+
 const mainRouter = require("./routes/index");
 
+const { requestLogger, errorLogger } = require("./middlewares/logger");
+
 const app = express();
+
+app.use(requestLofgger); // request logger
 
 app.use(cors());
 
@@ -27,36 +34,16 @@ mongoose
 
 app.use(express.json());
 
-// app.use("/", authRouter);
-
-// app.use((req, res, next) => {
-//   req.user = { _id: "5d8b8592978f8bd833ca8133" }; // Use a valid user _id from your DB
-//   next();
-// });
-
-// Allow signup and signin without auth
-
-// Require token for all routes below
-// app.use(auth);
-
 app.use("/", mainRouter);
 
-app.use((err, req, res) => {
-  console.error(err);
-  if (err.name === "ValidationError") {
-    return res
-      .status(statusCodes.BAD_REQUEST)
-      .send({ message: "An error has occurred on the server" });
-  }
-  if (err.name === "CastError") {
-    return res
-      .status(statusCodes.BAD_REQUEST)
-      .send({ message: "Invalid ID format" });
-  }
-  return res
-    .status(statusCodes.INTERNAL_SERVER_ERROR)
-    .send({ message: "Internal Server Error" });
-});
+app.use(errorLogger); // error logger
+
+app.use(errors()); // celebrate error handler
+
+app.use(errorHandler);
+
+const { errors } = require("celebrate");
+const errorHandler = require("./middlewares/error-handler");
 
 app.listen(PORT, () => {
   logger.log(`Listening on port ${PORT}`);

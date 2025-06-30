@@ -19,7 +19,7 @@ const auth = (req, res, next) => {
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
     return res
-      .status(statusCodes.UNAUTHORIZED)
+      .status(statusCodes.UnauthorizedError)
       .send({ message: "Invalid token" });
   }
   req.user = payload;
