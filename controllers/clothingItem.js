@@ -8,11 +8,10 @@ const {
   INTERNAL_SERVER_ERROR,
 } = require("../errors/BadRequestError");
 
-
 const { statusCodes } = require("../utils/config");
 
 // GET /items
-const getItems = (req, res) => {
+const getItems = (req, res, next) => {
   ClothingItem.find({})
     .then((items) => res.status(statusCodes.OK).send(items))
     .catch((err) => {
@@ -26,7 +25,7 @@ const getItems = (req, res) => {
 };
 
 // POST /items
-const createItem = (req, res) => {
+const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   const owner = req.user._id;
 
@@ -47,7 +46,7 @@ const createItem = (req, res) => {
 };
 
 // DELETE /items/:itemId
-const deleteItem = (req, res) => {
+const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
@@ -94,7 +93,7 @@ const deleteItem = (req, res) => {
 };
 
 // PUT /items/:itemId/likes
-const likeItem = (req, res) => {
+const likeItem = (req, res, next) => {
   const { itemId } = req.params;
   const userId = req.user._id; // Replace with real user ID if using auth
 
@@ -134,7 +133,7 @@ const likeItem = (req, res) => {
 };
 
 // DELETE /items/:itemId/likes
-const unlikeItem = (req, res) => {
+const unlikeItem = (req, res, next) => {
   const { itemId } = req.params;
   const userId = req.user._id; // req.user._id
 

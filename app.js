@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 const express = require("express");
 
-const { errors } = require("celebrate");
+const { errors: celebrateErrors } = require("celebrate");
 
 const errorHandler = require("./middlewares/error-handler");
 
@@ -15,13 +15,13 @@ const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
 
-app.use(requestLofgger); // request logger
+app.use(requestLogger); // request logger
 
 app.use(cors());
 
 const { PORT = 3001 } = process.env;
 
-const { statusCodes } = require("./utils/config");
+// const { statusCodes } = require("./utils/config");
 
 const logger = console;
 
@@ -38,13 +38,10 @@ app.use("/", mainRouter);
 
 app.use(errorLogger); // error logger
 
-app.use(errors()); // celebrate error handler
+app.use(celebrateErrors()); // celebrate error handler
 
 app.use(errorHandler);
 
-const { errors } = require("celebrate");
-const errorHandler = require("./middlewares/error-handler");
-
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   logger.log(`Listening on port ${PORT}`);
 });

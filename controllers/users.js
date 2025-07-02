@@ -6,7 +6,7 @@ const User = require("../models/user");
 
 const {
   BadRequestError,
-  ForbiddenError,
+  // ForbiddenError,
   NotFoundError,
   DuplicateEmailError,
   UnauthorizedError,
@@ -18,7 +18,7 @@ const { statusCodes } = require("../utils/config");
 // GET /users
 // const BAD_RequestStatus_CODE = 400; Use this instead of the hard coded numbers.
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   bcrypt
@@ -98,7 +98,7 @@ const login = (req, res, next) => {
 };
 
 // PATCH /users/me
-const updateUserProfile = (req, res) => {
+const updateUserProfile = (req, res, next) => {
   const userId = req.user._id;
   const { name, avatar } = req.body;
 
@@ -139,7 +139,7 @@ const updateUserProfile = (req, res) => {
 };
 
 // GET /users/me
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   const userId = req.user._id;
 
   User.findById(userId)
