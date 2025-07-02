@@ -1,6 +1,7 @@
 const winston = require("winston");
 const expresswinston = require("express-winston");
 
+console.log(">> logger.js loaded from:", __filename);
 const messageFormat = winston.format.combine(
   winston.format.timestamp(),
   winston.format.printf(
