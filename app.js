@@ -20,10 +20,11 @@ app.use(requestLogger); // request logger
 app.use(cors());
 
 const { PORT = 3001 } = process.env;
-
-// const { statusCodes } = require("./utils/config");
-
 const logger = console;
+
+app.get("/", (req, res) => {
+  res.send("API is working!");
+});
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
