@@ -19,7 +19,8 @@ app.use(requestLogger); // request logger
 
 app.use(cors());
 
-const { PORT = 3001 } = process.env;
+// const { PORT = 3001 } = process.env;
+const PORT = 80;
 const logger = console;
 
 app.get("/", (req, res) => {
