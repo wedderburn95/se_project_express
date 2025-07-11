@@ -4,10 +4,11 @@ const { statusCodes } = require("../utils/config");
 const auth = (req, res, next) => {
   const { JWT_SECRET = "dev-secret" } = process.env;
   const { authorization } = req.headers;
+  console.log("JWT_SECRET from process.env:", process.env.JWT_SECRET);
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return res
-      .status(statusCodes.BAD_REQUEST)
+      .status(statusCodes.UnauthorizedError)
       .send({ message: "Authorization required" });
   }
 

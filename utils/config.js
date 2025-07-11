@@ -1,3 +1,5 @@
+const { JWT_SECRET = "dev-secret" } = process.env;
+
 const statusCodes = {
   OK: 200,
   CREATED: 201,
@@ -9,4 +11,4 @@ const statusCodes = {
   UnauthorizedError: 401,
 };
 
-module.exports = { statusCodes };
+module.exports = { statusCodes, JWT_SECRET };

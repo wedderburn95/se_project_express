@@ -17,11 +17,24 @@ const app = express();
 
 app.use(requestLogger); // request logger
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://rnr.pakasak.com", // allow frontend origin
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // allow specific methods
+    allowedHeaders: ["Content-Type", "Authorization"], // allow specific headers
+    credentials: true, // allow cookies and auth headers
+  })
+);
 
 const { PORT = 3001 } = process.env;
-// const PORT = 80;
+
 const logger = console;
+
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
 
 app.get("/", (req, res) => {
   res.send("API is working!");
