@@ -6,7 +6,7 @@ const statusCodes = {
   BAD_REQUEST: 400,
   ForbiddenError: 403,
   NotFoundError: 404,
-  INTERNAL_SERVER_ERROR: 500,
+  InternalServerError: 500,
   DuplicateEmailError: 409,
   UnauthorizedError: 401,
 };

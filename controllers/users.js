@@ -9,7 +9,7 @@ const {
   NotFoundError,
   DuplicateEmailError,
   UnauthorizedError,
-  INTERNAL_SERVER_ERROR,
+  InternalServerError,
 } = require("../errors/BadRequestError");
 
 const { statusCodes } = require("../utils/config");
@@ -34,7 +34,7 @@ const createUser = (req, res, next) => {
         return next(new BadRequestError("An error has occurred on the server"));
       }
       return next(
-        new INTERNAL_SERVER_ERROR("An error has occurred on the server")
+        new InternalServerError("An error has occurred on the server")
       );
     });
 };
@@ -67,7 +67,7 @@ const login = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       return next(
-        new INTERNAL_SERVER_ERROR("An error has occured on the server")
+        new InternalServerError("An error has occured on the server")
       );
     });
 };
@@ -99,7 +99,7 @@ const updateUserProfile = (req, res, next) => {
         return next(new BadRequestError("Invalid user data"));
       }
       return next(
-        new INTERNAL_SERVER_ERROR("An error has occurred on the server")
+        new InternalServerError("An error has occurred on the server")
       );
     });
 };
@@ -118,7 +118,7 @@ const getCurrentUser = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       return next(
-        new INTERNAL_SERVER_ERROR("An error has occurred on the server")
+        new InternalServerError("An error has occurred on the server")
       );
     });
 };

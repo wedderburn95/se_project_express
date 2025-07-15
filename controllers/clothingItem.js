@@ -5,7 +5,7 @@ const {
   BadRequestError,
   ForbiddenError,
   NotFoundError,
-  INTERNAL_SERVER_ERROR,
+  InternalServerError,
 } = require("../errors/BadRequestError");
 
 const { statusCodes } = require("../utils/config");
@@ -19,7 +19,7 @@ const getItems = (req, res, next) => {
         return next(new BadRequestError("Invalid item data"));
       }
       return next(
-        new INTERNAL_SERVER_ERROR("An error has occurred on the server")
+        new InternalServerError("An error has occurred on the server")
       );
     });
 };
@@ -40,7 +40,7 @@ const createItem = (req, res, next) => {
       }
       return next(err);
       // res
-      //   .status(statusCodes.INTERNAL_SERVER_ERROR)
+      //   .status(statusCodes.InternalServerError)
       //   .send({ message: "Internal Server Error" });
     });
 };
@@ -70,9 +70,6 @@ const deleteItem = (req, res, next) => {
         return next(
           new ForbiddenError("You are not allowed to delete this item")
         );
-        // res
-        //   .status(statusCodes.FORBIDDEN)
-        //   .send({ message: "You are not allowed to delete this item" });
       }
 
       return item.deleteOne().then(() => res.status(statusCodes.OK).send(item));
@@ -81,14 +78,8 @@ const deleteItem = (req, res, next) => {
       console.error(err);
       if (err.name === "ValidationError") {
         return next(new BadRequestError("Invalid item ID"));
-        // res
-        //   .status(statusCodes.BAD_REQUEST)
-        //   .send({ message: "Invalid item ID" });
       }
       return next(err);
-      // res
-      //   .status(statusCodes.ForbiddenError)
-      //   .send({ message: "An error occurred while deleting the item" });
     });
 };
 
@@ -99,9 +90,6 @@ const likeItem = (req, res, next) => {
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
     return next(new BadRequestError("Invalid item ID"));
-    // return res
-    //   .status(statusCodes.BAD_REQUEST)
-    //   .send({ message: "Invalid  item ID" });
   }
 
   return ClothingItem.findByIdAndUpdate(
@@ -112,23 +100,14 @@ const likeItem = (req, res, next) => {
     .then((item) => {
       if (!item) {
         return next(new NotFoundError("Item not found"));
-        // res
-        //   .status(statusCodes.NotFoundError)
-        //   .send({ message: "Item not found" });
       }
       return res.status(statusCodes.OK).send(item);
     })
     .catch((err) => {
       if (err.name === "CastError") {
         return next(new BadRequestError("Invalid item ID"));
-        // res
-        //   .status(statusCodes.BAD_REQUEST)
-        //   .send({ message: "Invalid item ID" });
       }
       return next(err);
-      // return res
-      //   .status(statusCodes.INTERNAL_SERVER_ERROR)
-      //   .send({ message: "An error has occurred on the server" });
     });
 };
 
@@ -145,9 +124,6 @@ const unlikeItem = (req, res, next) => {
     .then((item) => {
       if (!item) {
         return next(new NotFoundError("Item not found"));
-        // res
-        //   .status(statusCodes.NotFoundError)
-        //   .send({ message: "Item not found" });
       }
       return res.status(statusCodes.OK).send(item);
     })
@@ -157,10 +133,7 @@ const unlikeItem = (req, res, next) => {
           .status(statusCodes.BAD_REQUEST)
           .send({ message: "Invalid item ID" });
       }
-      return next(new INTERNAL_SERVER_ERROR("Internal Server Error"));
-      // return res
-      //   .status(statusCodes.INTERNAL_SERVER_ERROR)
-      //   .send({ message: "An error has occurred on the server" });
+      return next(new InternalServerError("Internal Server Error"));
     });
 };
 

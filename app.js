@@ -7,7 +7,7 @@ const express = require("express");
 
 const { errors: celebrateErrors } = require("celebrate");
 
-const errorHandler = require("./middlewares/error-handler");
+const errorHandler = require("./middlewares/errorHandler");
 
 const mainRouter = require("./routes/index");
 

@@ -13,8 +13,6 @@ const { validateId, validateCardBody } = require("../middlewares/validation");
 router.get("/", getItems);
 
 // Protected
-router.get("/", getItems);
-
 router.use(auth);
 router.post("/", auth, validateCardBody, createItem);
 router.delete("/:itemId", auth, validateId, deleteItem);
