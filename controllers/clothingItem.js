@@ -34,14 +34,8 @@ const createItem = (req, res, next) => {
     .catch((err) => {
       if (err.name === "ValidationError") {
         return next(new BadRequestError("Invalid item data"));
-        // res
-        // .status(statusCodes.BAD_REQUEST)
-        // .send({ message: "An error has occurred on the server" });
       }
       return next(err);
-      // res
-      //   .status(statusCodes.InternalServerError)
-      //   .send({ message: "Internal Server Error" });
     });
 };
 
@@ -51,18 +45,12 @@ const deleteItem = (req, res, next) => {
 
   if (!mongoose.Types.ObjectId.isValid(itemId)) {
     return next(new BadRequestError("Invalid item ID"));
-    // res
-    //   .status(statusCodes.BAD_REQUEST)
-    //   .send({ message: "Invalid item ID" });
   }
 
   return ClothingItem.findById(itemId)
     .then((item) => {
       if (!item) {
         return next(new NotFoundError("Item not found"));
-        // res
-        //   .status(statusCodes.NotFoundError)
-        //   .send({ message: "Item not found" });
       }
 
       // ✅ Ownership check

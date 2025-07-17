@@ -19,7 +19,7 @@ app.use(requestLogger); // request logger
 
 app.use(
   cors({
-    origin: "https://rnr.pakasak.com", // allow frontend origin
+    origin: ["http://localhost:3000", "https://rnr.pakasak.com"], // allow frontend origin
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // allow specific methods
     allowedHeaders: ["Content-Type", "Authorization"], // allow specific headers
     credentials: true, // allow cookies and auth headers

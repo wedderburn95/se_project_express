@@ -5,7 +5,6 @@ const UnauthorizedError = require("../errors/UnauthorizedError");
 const auth = (req, res, next) => {
   const { JWT_SECRET = "dev-secret" } = process.env;
   const { authorization } = req.headers;
-  // console.log("JWT_SECRET from process.env:", process.env.JWT_SECRET);
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return next(new UnauthorizedError("Authorization required"));
