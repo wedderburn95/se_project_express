@@ -1,4 +1,7 @@
-require("dotenv").config();
+require("dotenv").config({
+  path: process.env.NODE_ENV === "production" ? ".env.production" : ".env",
+});
+
 const cors = require("cors");
 
 const mongoose = require("mongoose");
